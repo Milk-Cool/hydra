@@ -3,6 +3,7 @@
 #include <fontconfig/fontconfig.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
 // https://stackoverflow.com/a/69543995/22470070
 
@@ -54,6 +55,7 @@ static void render_text(char* msg, int x, int y) {
 
 int main() {
 start:
+
     TTF_Init();
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(512, 64, 0, &window, &renderer);
@@ -88,7 +90,10 @@ start:
             SDL_Quit();
             for(uint8_t i = 0; i < 2; i++) {
                 pid_t p = fork();
-                if(p == 0) goto start;
+                if(p == 0) {
+                    srand(time(NULL) + i);
+                    goto start;
+                }
             }
             break;
         }
